@@ -29,12 +29,12 @@ public class TagView: UIButton {
         }
     }
     
-    @IBInspectable public var textColor: UIColor = UIColor.white {
+    @IBInspectable public var textColor: UIColor = UIColor.whiteColor() {
         didSet {
             reloadStyles()
         }
     }
-    @IBInspectable public var selectedTextColor: UIColor = UIColor.white {
+    @IBInspectable public var selectedTextColor: UIColor = UIColor.whiteColor() {
         didSet {
             reloadStyles()
         }
@@ -52,7 +52,7 @@ public class TagView: UIButton {
         }
     }
 
-    @IBInspectable public var tagBackgroundColor: UIColor = UIColor.gray {
+    @IBInspectable public var tagBackgroundColor: UIColor = UIColor.grayColor() {
         didSet {
             reloadStyles()
         }
@@ -76,39 +76,39 @@ public class TagView: UIButton {
         }
     }
     
-    var textFont: UIFont = UIFont.systemFont(ofSize: 12) {
+    var textFont: UIFont = UIFont.systemFontOfSize(12) {
         didSet {
             titleLabel?.font = textFont
         }
     }
     
     private func reloadStyles() {
-        if isHighlighted {
+        if highlighted {
             if let highlightedBackgroundColor = highlightedBackgroundColor {
                 // For highlighted, if it's nil, we should not fallback to backgroundColor.
                 // Instead, we keep the current color.
                 backgroundColor = highlightedBackgroundColor
             }
         }
-        else if isSelected {
+        else if selected {
             backgroundColor = selectedBackgroundColor ?? tagBackgroundColor
-            layer.borderColor = selectedBorderColor?.cgColor ?? borderColor?.cgColor
-            setTitleColor(selectedTextColor, for: UIControlState())
+            layer.borderColor = selectedBorderColor?.CGColor ?? borderColor?.CGColor
+            setTitleColor(selectedTextColor, forState: .Normal)
         }
         else {
             backgroundColor = tagBackgroundColor
-            layer.borderColor = borderColor?.cgColor
-            setTitleColor(textColor, for: UIControlState())
+            layer.borderColor = borderColor?.CGColor
+            setTitleColor(textColor, forState: .Normal)
         }
     }
     
-    override public var isHighlighted: Bool {
+    override public var highlighted: Bool {
         didSet {
             reloadStyles()
         }
     }
     
-    override public var isSelected: Bool {
+    override public var selected: Bool {
         didSet {
             reloadStyles()
         }
@@ -120,7 +120,7 @@ public class TagView: UIButton {
     
     @IBInspectable public var enableRemoveButton: Bool = false {
         didSet {
-            removeButton.isHidden = !enableRemoveButton
+            removeButton.hidden = !enableRemoveButton
             updateRightInsets()
         }
     }
@@ -137,7 +137,7 @@ public class TagView: UIButton {
             removeButton.lineWidth = removeIconLineWidth
         }
     }
-    @IBInspectable public var removeIconLineColor: UIColor = UIColor.white.withAlphaComponent(0.54) {
+    @IBInspectable public var removeIconLineColor: UIColor = UIColor.whiteColor().colorWithAlphaComponent(0.54) {
         didSet {
             removeButton.lineColor = removeIconLineColor
         }
@@ -156,8 +156,8 @@ public class TagView: UIButton {
     }
     
     public init(title: String) {
-        super.init(frame: CGRect.zero)
-        setTitle(title, for: UIControlState())
+        super.init(frame: CGRectZero)
+        setTitle(title, forState: .Normal)
         
         setupView()
     }
@@ -175,10 +175,8 @@ public class TagView: UIButton {
         onLongPress?(self)
     }
     
-    // MARK: - layout
-
-    override public var intrinsicContentSize: CGSize {
-        var size = titleLabel?.text?.size(attributes: [NSFontAttributeName: textFont]) ?? CGSize.zero
+    override public func intrinsicContentSize() -> CGSize {
+        var size = titleLabel?.text?.sizeWithAttributes([NSFontAttributeName: textFont]) ?? CGSizeZero
         size.height = textFont.pointSize + paddingY * 2
         size.width += paddingX * 2
         if enableRemoveButton {

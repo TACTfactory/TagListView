@@ -29,7 +29,7 @@ class ViewController: UIViewController, TagListViewDelegate {
         }
         
         let tagView = tagListView.addTag("gray")
-        tagView.tagBackgroundColor = UIColor.gray
+        tagView.tagBackgroundColor = UIColor.grayColor()
         tagView.onTap = { tagView in
             print("Don’t tap me!")
         }
@@ -37,21 +37,26 @@ class ViewController: UIViewController, TagListViewDelegate {
         tagListView.insertTag("This should be the third tag", at: 2)
         
         biggerTagListView.delegate = self
-        biggerTagListView.textFont = UIFont.systemFont(ofSize: 15)
+        biggerTagListView.textFont = UIFont.systemFontOfSize(15)
         biggerTagListView.shadowRadius = 2
         biggerTagListView.shadowOpacity = 0.4
-        biggerTagListView.shadowColor = UIColor.black
-        biggerTagListView.shadowOffset = CGSize(width: 1, height: 1)
+        biggerTagListView.shadowColor = UIColor.blackColor()
+        biggerTagListView.shadowOffset = CGSizeMake(1, 1)
         biggerTagListView.addTag("Inboard")
         biggerTagListView.addTag("Pomotodo")
         biggerTagListView.addTag("Halo Word")
-        biggerTagListView.alignment = .center
+        biggerTagListView.alignment = .Center
         
         biggestTagListView.delegate = self
-        biggestTagListView.textFont = UIFont.systemFont(ofSize: 24)
-        // it is also possible to add all tags in one go
-        biggestTagListView.addTags(["all", "your", "tag", "are", "belong", "to", "us"])
-        biggestTagListView.alignment = .right
+        biggestTagListView.textFont = UIFont.systemFontOfSize(24)
+        biggestTagListView.addTag("all")
+        biggestTagListView.addTag("your")
+        biggestTagListView.addTag("tag")
+        biggestTagListView.addTag("are")
+        biggestTagListView.addTag("belong")
+        biggestTagListView.addTag("to")
+        biggestTagListView.addTag("us")
+        biggestTagListView.alignment = .Right
         
     }
     
@@ -61,12 +66,12 @@ class ViewController: UIViewController, TagListViewDelegate {
     }
 
     // MARK: TagListViewDelegate
-    func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
+    func tagPressed(title: String, tagView: TagView, sender: TagListView) {
         print("Tag pressed: \(title), \(sender)")
-        tagView.isSelected = !tagView.isSelected
+        tagView.selected = !tagView.selected
     }
     
-    func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
+    func tagRemoveButtonPressed(title: String, tagView: TagView, sender: TagListView) {
         print("Tag Remove pressed: \(title), \(sender)")
         sender.removeTagView(tagView)
     }

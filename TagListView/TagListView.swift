@@ -279,7 +279,7 @@ public class TagListView: UIView {
     
     // MARK: - Manage tags
     
-    override public var intrinsicContentSize: CGSize {
+    override public func intrinsicContentSize() -> CGSize {
         var height = CGFloat(rows) * (tagViewHeight + marginY)
         if rows > 0 {
             height -= marginY
@@ -287,7 +287,7 @@ public class TagListView: UIView {
         return CGSizeMake(frame.width, height)
     }
     
-    public func addTag(title: String) -> TagView {
+    private func createNewTagView(title: String) -> TagView {
         let tagView = TagView(title: title)
         
         tagView.textColor = textColor
@@ -310,9 +310,9 @@ public class TagListView: UIView {
         tagView.removeButton.addTarget(self, action: #selector(removeButtonPressed(_:)), forControlEvents: .TouchUpInside)
         
         // On long press, deselect all tags except this one
-        tagView.onLongPress = { [unowned self] this in
+        tagView.onLongPress = { (this) -> Void in
             for tag in self.tagViews {
-                tag.isSelected = (tag == this)
+                tag.selected = tag == this
             }
         }
         
@@ -353,8 +353,8 @@ public class TagListView: UIView {
     }
 
     public func insertTagView(tagView: TagView, at index: Int) -> TagView {
-        tagViews.insert(tagView, at: index)
-        tagBackgroundViews.insert(UIView(frame: tagView.bounds), at: index)
+        tagViews.insert(tagView, atIndex: index)
+        tagBackgroundViews.insert(UIView(frame: tagView.bounds), atIndex: index)
         rearrangeViews()
         
         return tagView
